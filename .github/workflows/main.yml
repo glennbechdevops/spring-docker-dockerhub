@@ -24,7 +24,7 @@ jobs:
           aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 244530008913.dkr.ecr.eu-west-1.amazonaws.com
           rev=$(git rev-parse --short HEAD)
           docker build . -t remote-docker-tag
-          docker tag build-docker-container-tag daskelars/remote-docker-tag
+          docker tag remote-docker-tag daskelars/remote-docker-tag
           docker tag remote-docker-tag 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr-repo:$rev
           docker push daskelars/remote-docker-tag
           docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr-repo:$rev
