@@ -246,7 +246,7 @@ For å lage en github actions workflows lager du en fil under `.github/workflows
 Her er et eksempel på en workflow tatt fra foreleser sitt miljø, du må gjøre endringer for å tilpasse den ditt eget? 
 Lykke til!
 
-NB. Du må først legge til Repository secrets for å gi GitHub "actions" AWS nøkler!
+NB. Du må først legge til Repository secrets. Gå til til Settings/Secrets and variables/Actions 
 
 ```yaml
 name: Publish Docker image
