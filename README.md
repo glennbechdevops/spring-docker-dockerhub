@@ -20,10 +20,9 @@ unzip awscliv2.zip
 sudo ./aws/install
 ```
 
-
 # Lag container av en Spring Boot applikasjon og push til Docker hub
 
-Verifiser at Docker er installert i ditt codespace
+Docker er installert i ditt codespace. Verifiser of test
 
 ```docker run hello-world``` 
 
