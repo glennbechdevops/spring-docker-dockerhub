@@ -277,7 +277,7 @@ jobs:
           docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/glenn:$rev
 ```
 
-Commit og push filen. Gå til Action i ditt GitHub repository. Se at GitHub  lager et nytt container image og laster opp image til ECR. 
+Commit og push docker.yml filen. Husk også Dockerfile om du ikke allerede har den i ditt repository. Gå til Action tabben i ditt GitHub repository. Se at GitHub  lager et nytt container image og laster opp image til ECR. 
 
 # Bonus challenge
 
