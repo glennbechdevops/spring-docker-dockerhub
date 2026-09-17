@@ -96,6 +96,17 @@ CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                  
 5a89931c5af6   hello-world   "/hello"   2 minutes ago   Exited (0) 2 minutes ago             fervent_bell
 ```
 
+> **Merk: `docker rm` og `docker image rm` er to forskjellige kommandoer.**
+>
+> Et **image** er malen — et bygget artefakt (som `hello-world`) du kan starte containere fra. Den ligger i lokal cache etter en `docker pull` eller `docker build`.
+>
+> En **container** er en kjørende (eller stoppet) instans av et image. Hver gang du kjører `docker run`, lages en ny container.
+>
+> - `docker rm <container id>` sletter en container.
+> - `docker image rm <image id>` sletter selve imaget.
+>
+> Du må slette containerne som bruker et image *før* du kan slette imaget. Det er derfor vi rydder i denne rekkefølgen: først container, så image.
+
 Slett den stoppede containeren med 
 
 ```aidl
