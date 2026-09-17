@@ -126,7 +126,7 @@ Du kan teste dette med;
 docker image rm <IMAGE ID>
 ```
 
-## Docker Image
+## Lage docker image basert på Spring Boot-applikasjon
 
 Først; Sjekk at du kan kjøre Spring Boot applikasjonen med Maven 
 ```
