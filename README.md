@@ -208,7 +208,7 @@ Del gjerne Docker hub container image navnet med andre, så de kan forsøke å k
 
 ## Autentiser docker mot AWS ECR
 
-Du kan gjøre dette ved å kjøre
+Du kan gjøre dette ved å kjøre kommandoen (copy/paste denne)
 ```
 aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 244530008913.dkr.ecr.eu-west-1.amazonaws.com
 ````
