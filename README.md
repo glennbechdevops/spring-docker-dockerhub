@@ -35,7 +35,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 ```
 
-## Del 1 - Lag container av en Spring Boot applikasjon og push til Docker Hub
+## Del 1 - Kom i gang med Docker
 
 Docker er installert i ditt codespace. Verifiser og test
 
@@ -126,7 +126,7 @@ Du kan teste dette med;
 docker image rm <IMAGE ID>
 ```
 
-## Lage docker image basert på Spring Boot-applikasjon
+## Del 2 - Lage docker image basert på Spring Boot-applikasjon
 
 Først; Sjekk at du kan kjøre Spring Boot applikasjonen med Maven 
 ```
@@ -219,7 +219,7 @@ Gå til dockerhub.com og se på container image du nettopp lastet opp.
 
 Del gjerne navnet på Docker Hub-imaget ditt med andre, så de kan forsøke å kjøre det med `docker run`. Foreleser sitt image heter for eksempel `glennbech/shaky`.
 
-## Del 2 - Amazon Container Registry ECR
+## Del 3 - Amazon Container Registry ECR
 
 ## Konfigurere AWS Access keys 
 
