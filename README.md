@@ -113,7 +113,7 @@ Slett den stoppede containeren med
 docker rm <container id> - i eksemplet over 5a89931c5af6
 ```
 
-OBS, og til info; Docker-kommandoen docker rm brukes til å fjerne en eller flere stoppede containere. Kommandoen fjerner ikke kjørende containere; den fungerer kun på stoppede containere, men du kan overstyre dette med 
+`docker rm` fjerner bare stoppede containere. For å tvinge sletting av en container som kjører, bruk `-f`:
 
 ```
 docker rm -f <container id> 
