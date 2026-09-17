@@ -233,7 +233,6 @@ get-login-password er en AWS-kommando som returnerer et passord som er nødvendi
 
 Eksempel:
 ```sh
-docker build -t <ditt tagnavn> .
 docker tag <ditt tagnavn> 244530008913.dkr.ecr.eu-west-1.amazonaws.com/<ditt ECR repo navn>
 docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/<ditt ECR repo navn>
 ```
