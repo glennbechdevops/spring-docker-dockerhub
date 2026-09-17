@@ -195,9 +195,11 @@ Del gjerne Docker hub container image navnet med andre, så de kan forsøke å k
 
 # Del 2 - Amazon Container Registry ECR
 
-## Konfigurere AWS Access keys for Codespaces 
+## Konfigurere AWS Access keys 
 
-Før du går videre må du konfigurere "Codespaces" Accessnøkler for AWS. 
+* Lag aksessnøkler https://github.com/glennbechdevops/aws-iam-accesskeys
+* Kjør `aws configure` og oppgi Access Key ID, secret access Key, Region (eu-west-1) og json som filformat
+  
 
 ## Lag et AWS  ECR repository for din container
 
