@@ -265,7 +265,7 @@ docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/<ditt ECR repo navn>
 
 Gå til tjenesten ECR i AWS og se at du har fått et container image i ditt registry. NB! Hvis du ikke finner ditt repo- sjekk at du er i riktig region.
 
-## Få GitHub Actions til å bygge & pushe et nytt Image hver gang noen lager en ny commit på main branch 
+## Del 4 - Få GitHub Actions til å bygge & pushe et nytt image ved hver commit på main 
 
 
 Du må legge til Repository secrets. Gå til Settings/Secrets and variables/Actions. Og legg inn AWS_ACCESS_KEY_ID og AWS_SECRET_ACCESS_KEY.
