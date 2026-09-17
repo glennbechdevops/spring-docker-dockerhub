@@ -167,15 +167,20 @@ Du lager er token ved å trykke på ditt profilbilde (øverst til høyre) - og d
 
 * Gi tokenet et navn og read/write/delete permissions.
 
-## Bygg en container og push til Docker hub 
+## Logg innn - Bygg en container og push til Docker hub 
 
+Login på Docker Hub fra terminalen din 
 ```
-docker login -u <ditt brukernavn>
-docker tag <tag> <dockerhub_username>/<tag_remote>
-docker push <username>/<tag_remote>
+docker login -u <ditt brukernavn på dockerhub>
 ```
 
-Example:
+Når du kjørte `docker build` valgte du en `tag` denne trenger du nå...
+```
+docker tag <tag> <ditt brukernavn på dockerhub>/<tag>
+docker push <ditt brukernavn på dockerhub>/<tag>
+```
+
+Eksempel:
 ```
 docker login
 docker tag fantasticapp glennbech/fantasticapp
@@ -187,6 +192,8 @@ Gå til dockerhub.com og se på container image du nettopp lastet opp.
 ## Share the joy! 
 
 Del gjerne Docker hub container image navnet med andre, så de kan forsøke å kjøre det med ```docker run``` mitt container image heter ```glennbech/shaky```
+
+# Del 2 - Amazon Container Registry ECR
 
 ## Konfigurere AWS Access keys for Codespaces 
 
