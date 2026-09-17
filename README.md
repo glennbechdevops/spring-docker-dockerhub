@@ -1,16 +1,31 @@
-# Docker med Spring boot, Docker hub & AWS ECR 
+# Docker med Spring boot, Docker Hub & AWS ECR 
 
-## Beskrivelse
+## Læringsmål
 
-* Dette repoet inneholder en veldig enkel Spring Boot applikasjon som sier "hello" når en request kommer til context root (/)
-* I denne øvingen skal dere bli bedre kjent med Docker og hvordan vi lager et Docker container Image av en Spring boot applikasjon.
-* Vi skal bli kjent med både Docker hub og AWS ECR
-* Vi skal også sette opp en CI pipeline for å automatisk bygge et nytt container image på hver push til main branch.
+Etter denne øvingen skal du kunne:
+
+- Lage et Docker container image av en Spring Boot-applikasjon med en multi-stage Dockerfile
+- Publisere container images til Docker Hub og AWS ECR
+- Sette opp en GitHub Actions-workflow som automatisk bygger og pusher et image ved hver push til `main`
+
+Repoet inneholder en enkel Spring Boot-applikasjon som svarer «Hello» på context root (`/`).
+
+## AWS-tjenester brukt i labben
+
+- **AWS ECR (Elastic Container Registry)** — AWS sitt registry for container images. Vi laster opp images hit fra både terminal og GitHub Actions.
+- **AWS IAM** — brukes til å lage access keys som gir programmatisk tilgang til AWS fra terminalen og fra GitHub Actions.
+- **AWS CLI** — kommandolinjeverktøyet vi bruker for å autentisere Docker mot ECR.
+
+Alle AWS-kommandoer i labben bruker region `eu-west-1`.
 
 ## Lag en fork og et Codespace
 
-* Dette begynner å bli kjent nå, right? 
-* Du må start med å lage en fork av dette repoet til din egen GitHub konto. 
+En **fork** er din egen kopi av et GitHub-repo. Når du forker dette repoet, får du en versjon under din egen GitHub-konto som du kan endre, committe og pushe til uten å påvirke originalen. Endringene dine lever i din fork.
+
+I denne labben trenger du en fork fordi du skal legge til en `Dockerfile` og en GitHub Actions-workflow, og pushen din skal trigge en bygg i *ditt* repo — ikke i originalen.
+
+1. Trykk på **Fork** øverst til høyre på GitHub-siden for dette repoet.
+2. Åpne din fork og start et Codespace (**Code** → **Codespaces** → **Create codespace on main**).
 
 ## Installer AWS CLI i ditt codespace 
 
@@ -20,9 +35,9 @@ unzip awscliv2.zip
 sudo ./aws/install
 ```
 
-# Lag container av en Spring Boot applikasjon og push til Docker hub
+## Del 1 - Lag container av en Spring Boot applikasjon og push til Docker Hub
 
-Docker er installert i ditt codespace. Verifiser of test
+Docker er installert i ditt codespace. Verifiser og test
 
 ```docker run hello-world``` 
 
@@ -100,7 +115,7 @@ Du kan teste dette med;
 docker image rm <IMAGE ID>
 ```
 
-# Docker Image
+## Docker Image
 
 Først; Sjekk at du kan kjøre Spring Boot applikasjonen med Maven 
 ```
@@ -108,7 +123,7 @@ mvn spring-boot:run
 ```
 
 * Sjekk at applikasjonen kjører. 
-* Åpne en ny terminal i ditt cosepace og kjør  
+* Åpne en ny terminal i ditt codespace og kjør  
 ```
 curl localhost:8080                                                                                                            
 ```
@@ -119,9 +134,9 @@ først lager en container som har alle verktøy til å bygge applikasjonen, mave
 
 Spring boot applikasjonen blir kompilert og bygget i denne containeren.  Deretter bruker den resultatet fra byggeprosessen, JAR filen til å lage en runtime container for applikasjonen. 
 
-Ta gjerne en pause og les gjerne mer om multi stage builds her; https://docs.docker.com/develop/develop-images/multistage-build/
+Ta gjerne en pause og les mer om multi stage builds her: https://docs.docker.com/develop/develop-images/multistage-build/
 
-Kopier dette innholder inn i en ny fil som skal hete  ```Dockerfile``` i rotkatalogen i ditt workspace
+Kopier dette innholdet inn i en ny fil som skal hete  ```Dockerfile``` i rotkatalogen i ditt workspace
 
 ```dockerfile
 
@@ -145,7 +160,7 @@ Prøv å bygge en Docker container
 docker build . --tag <du bestemmer tag eller navn>
 ```
 
-Prøv å starte en container basert dette container image.  
+Prøv å starte en container basert på dette container image.  
 ```sh
 docker run <tag eller navn som brukt over>
 ```
@@ -154,22 +169,22 @@ Når du starter en container, så lytter ikke applikasjonen på port 8080. Hvorf
 
 ### Oppgave
 
-Kan du start to versjoner av samme container, hvor en lytter på port 8080 og den andre på 8081?
+Kan du starte to versjoner av samme container, hvor en lytter på port 8080 og den andre på 8081?
 
 
-## Registrer deg på Docker hub
+## Registrer deg på Docker Hub
 
 https://hub.docker.com/signup
 
-### Lag et security token på Docker hub
+### Lag et security token på Docker Hub
 
-Du lager er token ved å trykke på ditt profilbilde (øverst til høyre) - og deretter "Account Settings", Personal Access tokens, og Generate Token. 
+Du lager et token ved å trykke på ditt profilbilde (øverst til høyre) - og deretter "Account Settings", Personal Access tokens, og Generate Token. 
 
 * Gi tokenet et navn og read/write/delete permissions.
 
-## Logg innn - Bygg en container og push til Docker hub 
+## Logg inn - Bygg en container og push til Docker Hub 
 
-Login på Docker Hub fra terminalen din 
+Login på Docker Hub fra terminalen din. `-u` angir brukernavnet; Docker spør deretter om passord/token.
 ```
 docker login -u <ditt brukernavn på dockerhub>
 ```
@@ -189,11 +204,11 @@ docker push glennbech/fantasticapp
 
 Gå til dockerhub.com og se på container image du nettopp lastet opp.
 
-## Share the joy! 
+## Del imaget med andre
 
-Del gjerne Docker hub container image navnet med andre, så de kan forsøke å kjøre det med ```docker run``` mitt container image heter ```glennbech/shaky```
+Del gjerne navnet på Docker Hub-imaget ditt med andre, så de kan forsøke å kjøre det med `docker run`. Foreleser sitt image heter for eksempel `glennbech/shaky`.
 
-# Del 2 - Amazon Container Registry ECR
+## Del 2 - Amazon Container Registry ECR
 
 ## Konfigurere AWS Access keys 
 
@@ -201,17 +216,17 @@ Del gjerne Docker hub container image navnet med andre, så de kan forsøke å k
 * Kjør `aws configure` og oppgi Access Key ID, secret access Key, Region (eu-west-1) og json som filformat
   
 
-## Lag et AWS  ECR repository for din container
+## Lag et AWS ECR repository for din container
 
 * Pass på at du er i AWS region eu-west-1
-* Du kan lage et ECR repository fra kommandlinje med `àws ecr ...` eller fra AWS Console. Du velger, men du må finne ut hvordan du gjør det selv. 
+* Du kan lage et ECR repository fra kommandolinje med `aws ecr ...` eller fra AWS Console. Du velger, men du må finne ut hvordan du gjør det selv. 
 
 ## Autentiser docker mot AWS ECR
 
 Du kan gjøre dette ved å kjøre kommandoen (copy/paste denne)
 ```
 aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 244530008913.dkr.ecr.eu-west-1.amazonaws.com
-````
+```
 
 Denne ser kanskje litt kryptisk ut, dette er hva som skjer steg for steg 
 
@@ -229,7 +244,7 @@ get-login-password er en AWS-kommando som returnerer et passord som er nødvendi
 * 244530008913.dkr.ecr.eu-west-1.amazonaws.com er URL-en til ECR-registeret du prøver å logge inn på.
 * Dette spesifiserer nøyaktig hvilket ECR-register Docker skal autentisere mot.
     
-##  Push et container image til dit ECR repository
+## Push et container image til ditt ECR repository
 
 Eksempel:
 ```sh
@@ -242,12 +257,12 @@ Gå til tjenesten ECR i AWS og se at du har fått et container image i ditt regi
 ## Få GitHub Actions til å bygge & pushe et nytt Image hver gang noen lager en ny commit på main branch 
 
 
-Du må legge til Repository secrets. Gå til til Settings/Secrets and variables/Actions. Og legg inn AWS_ACCESS_KEY_ID og AWS_SECRET_ACCESS_KEY.
+Du må legge til Repository secrets. Gå til Settings/Secrets and variables/Actions. Og legg inn AWS_ACCESS_KEY_ID og AWS_SECRET_ACCESS_KEY.
 
 For å lage en github actions workflows lager du en yml fil, for eksempel docker.yml - under `.github/workflows` katalogen i ditt codespace. Du må lage .github/workflows katalogen.
 Her er et eksempel på en workflow tatt fra foreleser sitt miljø. Du må nå gjøre endringer for å tilpasse den ditt eget repo. 
 
-DU SKAL IKKE SKRIVE LEGGE INN DINE ACCESS KEYS/SECRET ACCESS KEY INN I FILEN :) $$$ 
+DU SKAL IKKE LEGGE INN DINE ACCESS KEYS/SECRET ACCESS KEY I FILEN.
 
 ```yaml
 name: Publish Docker image
@@ -277,9 +292,14 @@ jobs:
           docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/glenn:$rev
 ```
 
-Commit og push docker.yml filen. Husk også Dockerfile om du ikke allerede har den i ditt repository. Gå til Action tabben i ditt GitHub repository. Se at GitHub  lager et nytt container image og laster opp image til ECR. 
+Kort om kommandoene i `run`-blokken:
+- `git rev-parse --short HEAD` gir en kort commit-hash (7 tegn) som vi bruker som image-tag, slik at hvert bygg får en unik tag.
+- `docker build . -t hello` bygger et image fra `Dockerfile` i nåværende katalog. `-t` setter navn/tag på imaget.
+- `docker tag` og `docker push` merker imaget med ECR-URL-en og laster det opp.
 
-# Bonus challenge
+Commit og push docker.yml filen. Husk også Dockerfile om du ikke allerede har den i ditt repository. Gå til Action tabben i ditt GitHub repository. Se at GitHub lager et nytt container image og laster opp image til ECR. 
+
+## Bonus challenge
 
 * Kan du laste opp image til både AWS ECR, men også Docker Hub fra GitHub Actions workflowen?
 * Kan du kjøre Spring boot applikasjonen din på tjenesten AWS Apprunner ? https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html
