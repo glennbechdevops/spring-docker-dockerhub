@@ -29,17 +29,21 @@ I denne labben trenger du en fork fordi du skal legge til en `Dockerfile` og en 
 
 ## Installer AWS CLI i ditt codespace 
 
-```
+```sh
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 ```
 
+`-o` skriver curl-output til fila `awscliv2.zip` i stedet for å printe til terminalen.
+
 ## Del 1 - Kom i gang med Docker
 
 Docker er installert i ditt codespace. Verifiser og test
 
-```docker run hello-world``` 
+```sh
+docker run hello-world
+```
 
 Forventet resultat  
 
@@ -71,7 +75,7 @@ Forventet resultat
 
 Kjør kommandoen 
 
-```aidl
+```sh
 docker images
 ```
 Du vil se at Docker har lastet ned et *hello-world* container image. 
@@ -79,19 +83,19 @@ Vi skal nå slette dette, men vi må først fjerne en stoppet container som er b
 
 Kjør først kommandoen ```docker ps``` for å se hvilke containere som kjører. Du vil få en tom liste
 
-```aidl
+```sh
 docker ps
 ```
 
 Legger du på -a argumentet, vil du også se stoppede containere  
 
-```aidl
+```sh
 docker ps -a 
 ```
 
 Du kan få output som for eksempel 
 
-```aidl
+```sh
 CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                     PORTS     NAMES
 5a89931c5af6   hello-world   "/hello"   2 minutes ago   Exited (0) 2 minutes ago             fervent_bell
 ```
@@ -109,7 +113,7 @@ CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                  
 
 Slett den stoppede containeren med 
 
-```aidl
+```sh
 docker rm <container id> - i eksemplet over 5a89931c5af6
 ```
 
@@ -119,10 +123,10 @@ docker rm <container id> - i eksemplet over 5a89931c5af6
 docker rm -f <container id> 
 ```
 
-Kjør ```docker images``` igjen. Docker-kommandoen docker images rm brukes  til å slette et container image.
+Kjør ```docker images``` igjen. Docker-kommandoen `docker image rm` brukes til å slette et container image.
 Du kan teste dette med;
 
-```aidl
+```sh
 docker image rm <IMAGE ID>
 ```
 
@@ -143,7 +147,7 @@ Den skal bare svare "Hello"
 Nå skal vi lage en Dockerfile for Spring Boot-applikasjonen. Vi skal bruke en "multi stage" Docker fil, som 
 først lager en container som har alle verktøy til å bygge applikasjonen, maven osv.
 
-Spring boot applikasjonen blir kompilert og bygget i denne containeren.  Deretter bruker den resultatet fra byggeprosessen, JAR filen til å lage en runtime container for applikasjonen. 
+Spring boot applikasjonen blir kompilert og bygget i denne containeren. Deretter bruker den resultatet fra byggeprosessen, JAR filen til å lage en runtime container for applikasjonen. 
 
 Ta gjerne en pause og les mer om multi stage builds her: https://docs.docker.com/develop/develop-images/multistage-build/
 
@@ -176,7 +180,7 @@ Prøv å starte en container basert på dette container image.
 docker run <tag eller navn som brukt over>
 ```
 
-Når du starter en container, så lytter ikke applikasjonen på port 8080. Hvorfor ikke ? Hint; port mapping 
+Når du starter en container, så lytter ikke applikasjonen på port 8080. Hvorfor ikke? Hint: port mapping 
 
 ### Oppgave
 
@@ -221,18 +225,18 @@ Del gjerne navnet på Docker Hub-imaget ditt med andre, så de kan forsøke å k
 
 ## Del 3 - Amazon Container Registry ECR
 
-## Konfigurere AWS Access keys 
+### Konfigurere AWS Access keys 
 
 * Lag aksessnøkler https://github.com/glennbechdevops/aws-iam-accesskeys
 * Kjør `aws configure` og oppgi Access Key ID, secret access Key, Region (eu-west-1) og json som filformat
   
 
-## Lag et AWS ECR repository for din container
+### Lag et AWS ECR repository for din container
 
 * Pass på at du er i AWS region eu-west-1
-* Du kan lage et ECR repository fra kommandolinje med `aws ecr ...` eller fra AWS Console. Du velger, men du må finne ut hvordan du gjør det selv. 
+* Du kan lage et ECR repository fra kommandolinjen med `aws ecr ...` eller fra AWS Console. Du velger, men du må finne ut hvordan du gjør det selv. 
 
-## Autentiser docker mot AWS ECR
+### Autentiser docker mot AWS ECR
 
 Du kan gjøre dette ved å kjøre kommandoen (copy/paste denne)
 ```
@@ -247,7 +251,7 @@ Denne delen av kommandoen bruker AWS CLI (aws) til å hente et midlertidig innlo
 get-login-password er en AWS-kommando som returnerer et passord som er nødvendig for å autentisere Docker mot ECR.
 --region eu-west-1 spesifiserer hvilken region du vil hente passordet for. I dette tilfellet er regionen eu-west-1 (Vest-Europa, Irland).
 
-### | docker login --username AWS --password-stdin 244530008913.dkr.ecr.eu-west-1.amazonaws.com 
+### docker login --password-stdin ...
 
 * Symbolet | er en pipe som brukes til å sende output fra den første kommandoen (passordet) som input til den neste kommandoen.
 *  docker login --username AWS --password-stdin 244530008913.dkr.ecr.eu-west-1.amazonaws.com er kommandoen for å logge inn på Docker, hvor --username AWS angir at brukernavnet er AWS.
@@ -255,7 +259,7 @@ get-login-password er en AWS-kommando som returnerer et passord som er nødvendi
 * 244530008913.dkr.ecr.eu-west-1.amazonaws.com er URL-en til ECR-registeret du prøver å logge inn på.
 * Dette spesifiserer nøyaktig hvilket ECR-register Docker skal autentisere mot.
     
-## Push et container image til ditt ECR repository
+### Push et container image til ditt ECR repository
 
 Eksempel:
 ```sh
@@ -263,15 +267,15 @@ docker tag <ditt tagnavn> 244530008913.dkr.ecr.eu-west-1.amazonaws.com/<ditt ECR
 docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/<ditt ECR repo navn>
 ```
 
-Gå til tjenesten ECR i AWS og se at du har fått et container image i ditt registry. NB! Hvis du ikke finner ditt repo- sjekk at du er i riktig region.
+Gå til tjenesten ECR i AWS og se at du har fått et container image i ditt registry. NB! Hvis du ikke finner ditt repo — sjekk at du er i riktig region.
 
 ## Del 4 - Få GitHub Actions til å bygge & pushe et nytt image ved hver commit på main 
 
 
 Du må legge til Repository secrets. Gå til Settings/Secrets and variables/Actions. Og legg inn AWS_ACCESS_KEY_ID og AWS_SECRET_ACCESS_KEY.
 
-For å lage en github actions workflows lager du en yml fil, for eksempel docker.yml - under `.github/workflows` katalogen i ditt codespace. Du må lage .github/workflows katalogen.
-Her er et eksempel på en workflow tatt fra foreleser sitt miljø. Du må nå gjøre endringer for å tilpasse den ditt eget repo. 
+For å lage en github actions workflow lager du en yml fil, for eksempel docker.yml - under `.github/workflows` katalogen i ditt codespace. Du må lage .github/workflows katalogen.
+Her er et eksempel på en workflow tatt fra foreleser sitt miljø. Du må nå gjøre endringer for å tilpasse den til ditt eget repo. 
 
 DU SKAL IKKE LEGGE INN DINE ACCESS KEYS/SECRET ACCESS KEY I FILEN.
 
@@ -289,7 +293,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build and push Docker image
         env:
@@ -309,6 +313,59 @@ Kort om kommandoene i `run`-blokken:
 - `docker tag` og `docker push` merker imaget med ECR-URL-en og laster det opp.
 
 Commit og push docker.yml filen. Husk også Dockerfile om du ikke allerede har den i ditt repository. Gå til Action tabben i ditt GitHub repository. Se at GitHub lager et nytt container image og laster opp image til ECR. 
+
+## Del 5 - Statussjekker før merge til `main`
+
+Så langt kan hvem som helst merge hva som helst til `main`. Nå skal du kreve at Docker-workflowen fra Del 4 må kjøre grønn før en pull request kan merges.
+
+En **statussjekk** er et krav GitHub håndhever før merge: en navngitt CI-jobb må ha kjørt ferdig og lykkes for at **Merge**-knappen skal bli aktiv. Er sjekken rød eller mangler, blokkeres merge.
+
+### 1. La workflowen kjøre på pull requests
+
+Workflowen fra Del 4 trigger bare på `push` til `main`. For at sjekken skal kjøre på en PR må du legge til `pull_request` som trigger:
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+```
+
+Commit og push endringen til `main`, slik at GitHub registrerer at jobben finnes.
+
+### 2. Finn navnet på jobben
+
+Åpne workflow-filen og se etter blokka under `jobs:`. Navnet du trenger er *nøkkelen* under `jobs:`, ikke `name:`-feltet. I eksempelet fra Del 4 heter jobben `push_to_registry`:
+
+```yaml
+jobs:
+  push_to_registry:      # <-- dette navnet trenger du i steg 3
+    name: Push Docker image to ECR
+```
+
+### 3. Legg til branch protection på `main`
+
+1. Gå til **Settings** → **Branches** i repoet ditt.
+2. Under **Branch protection rules**, klikk **Add rule**.
+3. Sett **Branch name pattern** til `main`.
+4. Huk av **Require status checks to pass before merging**.
+5. I søkefeltet under skriver du navnet på jobben (f.eks. `push_to_registry`) og velger den når den dukker opp.
+6. Lagre reglen.
+
+> **Om søkefeltet:** GitHub lister ikke jobber som bare finnes i workflow-filen — jobben må ha kjørt minst én gang i dette repoet for å være valgbar. Er trefflista tom når du søker, har workflowen ikke kjørt ennå. Gå tilbake til steg 1 og pushen som skulle trigge den.
+
+### 4. Test at det fungerer
+
+Lag en PR som skal feile:
+
+1. Lag en ny branch: `git checkout -b test-broken-build`. `-b` oppretter branchen og bytter til den i én kommando.
+2. Åpne `Dockerfile` og bytt `FROM eclipse-temurin:17-jre-alpine` til `FROM eclipse-temurin:17-jre-finnes-ikke`.
+3. Commit, push branchen, og opprett en PR mot `main`.
+4. Se at statussjekken kjører, feiler, og at **Merge pull request**-knappen er blokkert.
+5. Rett Dockerfile tilbake til `alpine`, push på nytt, og se at sjekken blir grønn og PR-en kan merges.
 
 ## Bonus challenge
 
