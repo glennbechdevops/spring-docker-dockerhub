@@ -346,14 +346,18 @@ jobs:
     name: Push Docker image to ECR
 ```
 
-### 3. Legg til branch protection på `main`
+### 3. Lag et ruleset som beskytter `main`
 
-1. Gå til **Settings** → **Branches** i repoet ditt.
-2. Under **Branch protection rules**, klikk **Add rule**.
-3. Sett **Branch name pattern** til `main`.
-4. Huk av **Require status checks to pass before merging**.
-5. I søkefeltet under skriver du navnet på jobben (f.eks. `push_to_registry`) og velger den når den dukker opp.
-6. Lagre reglen.
+GitHub har byttet ut «Branch protection rules» med **Rulesets** — samme idé, ny meny.
+
+1. Gå til **Settings** → **Rules** → **Rulesets** i repoet ditt.
+2. Klikk **New ruleset** → **New branch ruleset**.
+3. Gi rulesetet et navn, f.eks. `protect-main`.
+4. Sett **Enforcement status** til **Active** (ellers håndheves ikke reglene).
+5. Under **Target branches**, klikk **Add target** → **Include default branch** (som er `main`).
+6. Under **Rules**, huk av **Require status checks to pass**.
+7. Klikk **Add checks**, skriv navnet på jobben (f.eks. `push_to_registry`) i søkefeltet, og velg den når den dukker opp.
+8. Lagre rulesetet med **Create**.
 
 > **Om søkefeltet:** GitHub lister ikke jobber som bare finnes i workflow-filen — jobben må ha kjørt minst én gang i dette repoet for å være valgbar. Er trefflista tom når du søker, har workflowen ikke kjørt ennå. Gå tilbake til steg 1 og pushen som skulle trigge den.
 
