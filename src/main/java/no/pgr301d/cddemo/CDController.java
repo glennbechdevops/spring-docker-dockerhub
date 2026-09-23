@@ -11,4 +11,8 @@ class CDController {
         return "Hello";
     }
 
+    @GetMapping(path = "/boo/")
+    public String boo() {
+        return "Boo!";
+    }
 }
