@@ -348,8 +348,6 @@ jobs:
 
 ### 3. Lag et ruleset som beskytter `main`
 
-GitHub har byttet ut «Branch protection rules» med **Rulesets** — samme idé, ny meny.
-
 1. Gå til **Settings** → **Rules** → **Rulesets** i repoet ditt.
 2. Klikk **New ruleset** → **New branch ruleset**.
 3. Gi rulesetet et navn, f.eks. `protect-main`.
