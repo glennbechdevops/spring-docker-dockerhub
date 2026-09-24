@@ -21,7 +21,7 @@ jobs:
           cache: maven
 
       - name: Run maven init tests
-        run: mvn tes  t
+        run: mvn test
 
   push_to_registry:
     name: Push Docker image to ECR
