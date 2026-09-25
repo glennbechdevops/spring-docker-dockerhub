@@ -369,7 +369,3 @@ Lag en PR som skal feile:
 4. Se at statussjekken kjører, feiler, og at **Merge pull request**-knappen er blokkert.
 5. Rett Dockerfile tilbake til `alpine`, push på nytt, og se at sjekken blir grønn og PR-en kan merges.
 
-## Bonus challenge
-
-* Kan du laste opp image til både AWS ECR, men også Docker Hub fra GitHub Actions workflowen?
-* Kan du kjøre Spring boot applikasjonen din på tjenesten AWS Apprunner ? https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html
