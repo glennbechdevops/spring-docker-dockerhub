@@ -342,8 +342,8 @@ Commit og push endringen til `main`, slik at GitHub registrerer at jobben finnes
 
 ```yaml
 jobs:
-  push_to_registry:      # <-- dette navnet trenger du i steg 3
-    name: Push Docker image to ECR
+  push_to_registry:      
+    name: Push Docker image to ECR # <-- dette navnet trenger du i steg 3
 ```
 
 ### 3. Lag et ruleset som beskytter `main`
