@@ -1,4 +1,4 @@
-FROM maven:3.8-eclipse-temurin-17 AS builder
+FROM eclipse-temurin:17-jre-finnes-ikke
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
